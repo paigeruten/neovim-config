@@ -423,6 +423,7 @@ local servers = {
   gopls = {},
   rust_analyzer = {},
   tsserver = {},
+  clangd = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
