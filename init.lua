@@ -149,7 +149,16 @@ require('lazy').setup({
     },
     config = function()
       vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
-      require('neo-tree').setup {}
+      vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
+
+      require('neo-tree').setup {
+        close_if_last_window = false,
+        default_component_configs = {
+          name = {
+            trailing_slash = true,
+          },
+        },
+      }
     end,
   },
 
@@ -162,7 +171,7 @@ require('lazy').setup({
         options = {
           diagnostics = 'nvim_lsp',
           diagnostics_indicator = function(count, level)
-            local icon = level:match("error") and " " or " "
+            local icon = level:match("error") and " " or (level:match("warn") and " " or (level:match("info") and " " or ""))
             return " " .. icon .. count
           end,
         }
@@ -184,6 +193,15 @@ require('lazy').setup({
     opts = {},
   },
 }, {})
+
+vim.fn.sign_define("DiagnosticSignError",
+  {text = " ", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn",
+  {text = " ", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignInfo",
+  {text = " ", texthl = "DiagnosticSignInfo"})
+vim.fn.sign_define("DiagnosticSignHint",
+  {text = "", texthl = "DiagnosticSignHint"})
 
 -- [[ Setting options ]]
 
