@@ -115,7 +115,13 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',         opts = {} },
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = { line = 'gcc', block = 'gBc' },
+      opleader = { line = 'gc', block = 'gB' },
+    }
+  },
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -167,11 +173,29 @@ require('lazy').setup({
     version = "*",
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
+      vim.keymap.set('n', 'gb', ':BufferLinePick<CR>', { desc = 'Go to a buffer' } )
+      vim.keymap.set('n', 'gX', ':BufferLinePickClose<CR>', { desc = 'Close a buffer' } )
+
+      for i = 1,9 do
+        vim.keymap.set('n', '<leader>' .. i, ':BufferLineGoToBuffer ' .. i .. '<CR>', { silent = true })
+      end
+      vim.keymap.set('n', '<leader>$', ':BufferLineGoToBuffer -1<CR>', { silent = true })
+
+      vim.keymap.set('n', ']b', ':BufferLineCycleNext<CR>', { desc = 'Next buffer' })
+      vim.keymap.set('n', '[b', ':BufferLineCyclePrev<CR>', { desc = 'Previous buffer' })
+      vim.keymap.set('n', '<leader>b]', ':BufferLineMoveNext<CR>', { desc = 'Move buffer right' })
+      vim.keymap.set('n', '<leader>b[', ':BufferLineMovePrev<CR>', { desc = 'Move buffer left' })
+      vim.keymap.set('n', '<leader>b>', ':lua require"bufferline".move_to(-1)<CR>', { desc = 'Move buffer to end' })
+      vim.keymap.set('n', '<leader>b<', ':lua require"bufferline".move_to(1)<CR>', { desc = 'Move buffer to start' })
+      vim.keymap.set('n', '<leader>bs', ':BufferLineSortByDirectory<CR>', { desc = 'Sort buffers by directory' })
+
       require('bufferline').setup {
         options = {
+          buffer_close_icon = '',
           diagnostics = 'nvim_lsp',
           diagnostics_indicator = function(count, level)
-            local icon = level:match("error") and " " or (level:match("warn") and " " or (level:match("info") and " " or ""))
+            local icon = level:match("error") and " " or
+            (level:match("warn") and " " or (level:match("info") and " " or ""))
             return " " .. icon .. count
           end,
         }
@@ -195,13 +219,13 @@ require('lazy').setup({
 }, {})
 
 vim.fn.sign_define("DiagnosticSignError",
-  {text = " ", texthl = "DiagnosticSignError"})
+  { text = " ", texthl = "DiagnosticSignError" })
 vim.fn.sign_define("DiagnosticSignWarn",
-  {text = " ", texthl = "DiagnosticSignWarn"})
+  { text = " ", texthl = "DiagnosticSignWarn" })
 vim.fn.sign_define("DiagnosticSignInfo",
-  {text = " ", texthl = "DiagnosticSignInfo"})
+  { text = " ", texthl = "DiagnosticSignInfo" })
 vim.fn.sign_define("DiagnosticSignHint",
-  {text = "", texthl = "DiagnosticSignHint"})
+  { text = "", texthl = "DiagnosticSignHint" })
 
 -- [[ Setting options ]]
 
