@@ -277,8 +277,6 @@ vim.o.sidescroll = 10
 vim.keymap.set('i', 'jk', '<Esc>')
 vim.keymap.set('t', 'jk', '<C-\\><C-n>')
 
--- Disable <Esc> in insert mode (training myself to use 'jk' only)
-vim.keymap.set('i', '<Esc>', '<Nop>', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
